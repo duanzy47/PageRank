@@ -57,7 +57,7 @@ def extractText(content):
     for t in textTags:
         if t.parent.name not in blacklist: # we don't want to index thoses texts
             text+=" "+t
-    return test
+    return text
 
 
 # Very simple stemming function that lower word and removes final s and e.
