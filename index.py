@@ -15,7 +15,7 @@ cursor = conn.cursor()
 # compute the inverted index and the idf and store them
 # input: list L of words, output: list of (w,f) 
 
-L = ['matrice']
+L = ['comment','multiplier','des','matrice']
 
 df_webpages = pd.read_sql_query("SELECT * FROM webpages",conn)
 df_webpages = df_webpages[(df_webpages['URL'].str.contains("/A/"))]
@@ -55,7 +55,11 @@ for word in L:
     idf[word] = log(len(result)/sum(result[word]>0))
 
 idf = pd.DataFrame.from_dict(idf,orient='index')
+
+conn.execute("DROP TABLE IF EXISTS inverted_index")
 result.to_sql('inverted_index', conn, if_exists='replace', index=False)
+
+conn.execute("DROP TABLE IF EXISTS idf")
 idf.to_sql('idf', conn, if_exists='replace', index=False)
 
 cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
